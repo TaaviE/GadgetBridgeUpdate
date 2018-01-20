@@ -15,6 +15,12 @@ grep -rl --exclude-dir="*.git" "import android.support.v7.app.NotificationCompat
 grep -rl --exclude-dir="*.git" "public class NotificationListener extends NotificationListenerService" ./Gadgetbridge | xargs sed -i s^"public class NotificationListener extends NotificationListenerService"^"import static android.support.v4.media.app.NotificationCompat.MediaStyle.getMediaSession;\n\npublic class NotificationListener extends NotificationListenerService"^g
 grep -rl --exclude-dir="*.git" "MediaSessionCompat.Token mediaSession = NotificationCompat.getMediaSession(notification);" ./Gadgetbridge | xargs sed -i s^"MediaSessionCompat.Token mediaSession = NotificationCompat.getMediaSession(notification);"^"MediaSessionCompat.Token mediaSession = getMediaSession(notification);"^g
 
+# Remove donation link that's forbidden by Google Play
+grep -rl --exclude-dir="*.git" 'android:id="@+id/further_options">' ./Gadgetbridge | xargs sed -i s^'android:id="@+id/further_options">'^'android:id="@+id/further_options"><!--'^g
+grep -rl --exclude-dir="*.git" 'android:icon="@drawable/ic_donate" />' ./Gadgetbridge | xargs sed -i s^'android:icon="@drawable/ic_donate" />'^'android:icon="@drawable/ic_donate" />-->'^g
+grep -rl --exclude-dir="*.git" 'case R.id.donation_link:' ./Gadgetbridge | xargs sed -i s^'case R.id.donation_link:'^'/*case R.id.donation_link:'^g
+grep -rl --exclude-dir="*.git" 'case R.id.external_changelog:' ./Gadgetbridge | xargs sed -i s^'case R.id.external_changelog:'^'*/case R.id.external_changelog:'^g
+
 # Rename folders
 mv ./Gadgetbridge/app/src/main/java/nodomain/freeyourgadget ./Gadgetbridge/app/src/main/java/nodomain/aegrel
 mv ./Gadgetbridge/app/src/main/java/nodomain ./Gadgetbridge/app/src/main/java/ee
